@@ -95,9 +95,9 @@ function addVehicle(vehid,x,y,z,Besitzer)
 	local temp_veh = createVehicle(vehid,x,y,z,0,0,0,Besitzer)
 	local spawn = toJSON({x,y,z,0,0,0})
 	local farbe = toJSON({255,255,255,0,0,0,255,255,255,0})--Farbe 1,2 Lichtfarbe, Paintjob
-	local query = dbQuery(handler,"INSERT INTO Fahrzeuge (Name, Besitzer, Schluessel, Spawn, Schaden, Farbe, Tunings, Spezial, Tank, Kennzeichen) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", getVehicleName(temp_veh), getPlayerName(Besitzer), toJSON({}), spawn, 1000, farbe, toJSON(getVehicleUpgrades(temp_veh)), toJSON({}), 1000, getPlayerName(Besitzer) )
+	local query = dbQuery(handler,"INSERT INTO Fahrzeuge (Name, Besitzer, Schluessel, Spawn, Schaden, Farbe, Tunings, Spezial, Tank, Kennzeichen) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", getVehicleName(temp_veh), Besitzer, toJSON({}), spawn, 1000, farbe, toJSON(getVehicleUpgrades(temp_veh)), toJSON({}), 1000, Besitzer )
 	local result, rows, ID = dbPoll(query,-1)
-	
+	setVehicleColor(temp_veh,255,255,255,255,255,255)
 	UserVehicles[temp_veh] = {}
 	UserVehicles[temp_veh]["ID"] = ID
 	UserVehicles[temp_veh]["Besitzer"] = Besitzer
@@ -105,6 +105,7 @@ function addVehicle(vehid,x,y,z,Besitzer)
 	UserVehicles[temp_veh]["Spezial"] = {}
 	UserVehicles[temp_veh]["Tank"] = 1000
 	addEventHandler("onVehicleExit",temp_veh,saveVehicle)
+	return temp_veh
 end
 
 
@@ -122,9 +123,20 @@ function saveVehicle(driver)
 	end
 end
 
---addVehicle(411,0,0,4,getPlayerFromName("MasterM"))
-loadCars()
 
+--TODO
+--[[
+function deleteVehicle(veh)
+	if UserVehicles[veh] then
+		dbExec(handler,"UPDATE Fahrzeuge SET Spawn=?, Schaden=? WHERE ID=?",id)
+		return true
+	else
+		return false
+	end
+end]]
+
+
+loadCars()
 
 
 --TESTING
@@ -138,6 +150,18 @@ end
 
 
 
--- Musterquery:
 --
--- INSERT INTO `fahrzeuge` VALUES ('6', 'Infernus', 'MasterM', '[ [ ] ]', '[ [ 2.0224609375, 6.7041015625, 2.8395566940307617, 359.93408203125, 359.879150390625, 238.0352783203125 ] ]', '1000', '[ [ 255, 255, 255, 0, 0, 0, 255, 255, 255, 0 ] ]', '[ [ ] ]', '[ [ ] ]', '1000', 'MasterM');
+--Testing
+--
+function createEpicVehicle(player,cmd,id)
+	if id then	
+		local x,y,z = getElementPosition(player)
+		if not getVehicleIDFromName(id) then return Chat(id.." ist kein gültiges Fahrzeug.") end
+				local newveh = addVehicle(getVehicleIDFromName(id),x,y+2,z,getPlayerName(player))	
+				warpPedIntoVehicle(player,newveh)
+	else
+		Chat("Du musst ein Fahrzeug angeben")
+	end
+end
+addCommandHandler("vehicle",createEpicVehicle)
+
