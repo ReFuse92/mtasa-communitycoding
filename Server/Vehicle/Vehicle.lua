@@ -127,6 +127,16 @@ loadCars()
 
 
 
+--TESTING
+function createEpicVehicle(player,cmd,id)
+	if id and id > 400 and id < 611 then	
+		local x,y,z = getElementPosition(player)
+		addVehicle(id,x,y+2,z,getPlayerName(player))
+	end
+end
+
+
+
 
 -- Musterquery:
 --
