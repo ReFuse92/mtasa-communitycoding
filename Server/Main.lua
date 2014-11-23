@@ -23,7 +23,22 @@ if #mySQL > 0 then -- check if we have valid mysql informations
         assert(data, "[setMySQLData] data is not valid!")
         assert(value, "[setMySQLData] value is not valid!")
 
-        return dbExec("UPDATE `userdata` SET `??` = ? WHERE `username` = ?;", data, value, getPlayerName(usr));
+        return dbExec(mySQL.handler, "UPDATE `userdata` SET `??` = ? WHERE `username` = ?;", data, value, getPlayerName(usr));
+    end
+
+	function setAllMySQLData (tbl)
+        assert(type(tbl) == "table", "[setAllMySQLData] data is not valid!")
+
+        local query = ("UPDATE `userdata` SET %s = %s"):format(tbl[1], tbl[2])
+        for i = 3, #tbl, 2 do
+            if i == #tbl-1 then
+                query = ("%s, %s = %s WHERE `username`= ?;"):format(query, tbl[i], tbl[i+1])
+            else
+                query = ("%s, %s = %s"):format(query, tbl[i], tbl[i+1])
+            end
+        end
+
+        return dbExec(mySQL.handler, query, getPlayerName(usr))
     end
 
     function getMySQLData (usr, data, process)
