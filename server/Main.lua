@@ -1,7 +1,0 @@
---
--- Project: MTASA CommunityCoding
--- User: StiviK
--- Package: server.Main
--- Date: 22.11.14
--- Time: 11:36
---
