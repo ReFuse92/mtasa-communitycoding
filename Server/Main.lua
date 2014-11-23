@@ -26,7 +26,7 @@ if #mySQL > 0 then -- check if we have valid mysql informations
         return dbExec(mySQL.handler, "UPDATE `userdata` SET `??` = ? WHERE `username` = ?;", data, value, getPlayerName(usr));
     end
 
-	function setAllMySQLData (tbl)
+    function setAllMySQLData (tbl)
         assert(type(tbl) == "table", "[setAllMySQLData] data is not valid!")
 
         local query = ("UPDATE `userdata` SET %s = %s"):format(tbl[1], tbl[2])
