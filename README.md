@@ -5,4 +5,4 @@ Founder:
 Vandam, StiviK, Dr.Pro
 
 Member:
-Toxsi, Stocker, Iven, SP33D, iTzExotic, Adrian
+Toxsi, Stockler, Iven, SP33D, iTzExotic, Adrian93, PewX, kai, WarZ, Shyim, MasterM, Something Develop, Holunderbaer, PLASMA[GER], AclypZ, Ic3RefluX
