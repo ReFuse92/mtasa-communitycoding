@@ -9,7 +9,4 @@
 addEvent("onClientRecieveVehicleData",true)
 
 
-asdasd
-
-
 
