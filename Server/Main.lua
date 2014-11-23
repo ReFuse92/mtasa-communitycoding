@@ -64,3 +64,5 @@ if #mySQL > 0 then -- check if we have valid mysql informations
         end
     end
 end
+
+hallo
