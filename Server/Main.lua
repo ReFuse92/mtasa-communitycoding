@@ -6,10 +6,10 @@
 -- Time: 11:36
 --
 
-if #mySQL > 0 then -- check if we have valid mysql informations
+--if #mySQL > 0 then -- check if we have valid mysql informations
     outputDebugString("[MYSQL] Connecting to the mySQL-Server...")
 
-    mySQL.handler = dbConnect("mysql", "dbname="..mySQL.db";host="..mySQL.host, mySQL.user, mySQL.pass)
+    mySQL.handler = dbConnect("mysql", mySQL.host, mySQL.user, mySQL.pass)
 
     if mySQL.handler then
         outputDebugString("[MYSQL] Successfully connected to the mySQL-Server!")
@@ -81,4 +81,4 @@ if #mySQL > 0 then -- check if we have valid mysql informations
             return false;
         end
     end
-end
+--end
