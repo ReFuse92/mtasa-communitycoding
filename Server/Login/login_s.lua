@@ -1,29 +1,14 @@
 ﻿-- Project: MTASA CommunityCoding
 -- User: Adrian93
--- Package:
+-- Package: Server.Login.login_s
 -- Date: 23.11.2014
 -- Time: 11:39
 --
 
-local dbhost = "127.0.0.1"
-local dbusername = ""
-local dbname = ""
-local dbpassword = ""
-local dbport = "3306"
-
-function connect( )
-	handler = dbConnect("mysql", "dbname="..dbname..";host="..dbhost, dbusername, dbpassword)
-	if handler then
-		outputDebugString("Die Verbindung wurde erfolgreich aufgebaut!")
-	else
-		outputDebugString("Die Verbindung konnte nicht aufgebaut werden!")
-	end
-end
-connect()
-
+--[[
 function GetAccount( username )
 	if username ~= "" then
-		local query = dbQuery(handler, "SELECT * FROM accounts WHERE Username = ?", username)
+		local query = dbQuery(mySQL.handler, "SELECT * FROM accounts WHERE Username = ?", username)
 		local result, rows = dbPoll(query, -1)
 		if rows == 1 then
 			return result[1]
@@ -39,7 +24,7 @@ function AddAccount( username, password )
 		if password ~= "" then
 			local account = GetAccount(username)
 			if account == false then
-				local exec = dbExec(handler, "INSERT INTO accounts (Username, Password, PlayedH, PlayedM, Fraktion, Rang, Skin, Adminlvl, Money, Bankmoney) VALUES (?, ?, '0', '0', '0', '0', '0', '0', '0', '0', )", username, md5(password))
+				local exec = dbExec(mySQL.handler, "INSERT INTO accounts (Username, Password, PlayedH, PlayedM, Fraktion, Rang, Skin, Adminlvl, Money, Bankmoney) VALUES (?, ?, '0', '0', '0', '0', '0', '0', '0', '0', )", username, md5(password))
 				if exec then
 					outputDebugString("Der Account "..username.." wurde erfolgreich angelegt!")
 					return true
@@ -63,20 +48,12 @@ function Register ( playername,PlayerPW )
 	end
 end
 
-function getMysqlData(player, data)
-        local pname = getPlayerFromName(player)
-        local sql = dbQuery(handler, "SELECT * FROM accounts WHERE Username = '"..player.."'")
-        local result, num_rows = dbPoll(sql, -1)
-        for _, row in pairs (result) do
-                return row[data]
-        end
-end
 
 function Login( spieler, pw )
    	local player = getPlayerFromName(spieler)
     local Passwort = md5(pw)
 	local Password = getMysqlData(spieler, "Password")
-    local SQL = dbQuery( handler, "SELECT * FROM accounts WHERE Username = '"..spieler.."' AND Password = '"..md5(pw).."'")
+    local SQL = dbQuery( mySQL.handler, "SELECT * FROM accounts WHERE Username = '"..spieler.."' AND Password = '"..md5(pw).."'")
     local result, num_rows = dbPoll(SQL, -1 )
 	if (Password==Passwort)then
 		if result then
@@ -105,6 +82,7 @@ function Login( spieler, pw )
 		triggerClientEvent(player,"ZeigEsMir",player, pwfalsch)
 	end
 end
+--]]
 addEvent("RegistratePlayer",true)
 addEvent("LoginPlayer",true)
 addEventHandler("RegistratePlayer",getRootElement(),Register)
