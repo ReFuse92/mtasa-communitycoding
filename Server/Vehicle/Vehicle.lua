@@ -11,8 +11,8 @@ UserVehicles = {}
 Chat = outputChatBox
 
 function loadCars()
-local query = dbQuery(handler, "SELECT * FROM Fahrzeuge")
-local result, row, error = dbPoll(query, -1)
+	local query = dbQuery(handler, "SELECT * FROM Fahrzeuge")
+	local result, row, error = dbPoll(query, -1)
 	if row > 0 then
 		for result, row in pairs(result) do
 		-- auslesen
@@ -39,9 +39,9 @@ local result, row, error = dbPoll(query, -1)
 		setVehicleIdleRespawnDelay(veh,1000*60*60*24)-- 24 Stunden (wird nicht respawnt)
 		
 		-- Farbe
-			setVehicleColor(veh, Farbe[1], Farbe[2], Farbe[3], Farbe[4], Farbe[5], Farbe[6] )
-				setVehicleHeadLightColor(veh, Farbe[7], Farbe[8], Farbe[9])
-				setVehiclePaintjob(veh, Farbe[10])
+		setVehicleColor(veh, Farbe[1], Farbe[2], Farbe[3], Farbe[4], Farbe[5], Farbe[6] )
+		setVehicleHeadLightColor(veh, Farbe[7], Farbe[8], Farbe[9])
+		setVehiclePaintjob(veh, Farbe[10])
 		--Tunings
 		
 		
@@ -85,7 +85,7 @@ local result, row, error = dbPoll(query, -1)
 		-- ende des Auslesens
 		end
 	else
-	outputDebugString("[Vehicles]Keine Fahrzeuge vorhanden",1)
+		outputDebugString("[Vehicles]Keine Fahrzeuge vorhanden",1)
 	end
 end
 
@@ -144,11 +144,11 @@ loadCars()
 function createEpicVehicle(player,cmd,id)
 	if id then	
 		local x,y,z = getElementPosition(player)
-		if not getVehicleIDFromName(id) then return Chat(id.." ist kein gültiges Fahrzeug.") end
+		if not getVehicleIDFromName(id) then return Chat(id.." ist kein gültiges Fahrzeug.", player) end
 				local newveh = addVehicle(getVehicleIDFromName(id),x,y+2,z,getPlayerName(player))	
 				warpPedIntoVehicle(player,newveh)
 	else
-		Chat("Du musst ein Fahrzeug angeben")
+		Chat("Du musst ein Fahrzeug angeben", player)
 	end
 end
 addCommandHandler("vehicle",createEpicVehicle)

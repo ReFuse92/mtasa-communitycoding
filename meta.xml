@@ -1,11 +1,14 @@
 <meta>
-    8<info type="gamemode" author="MTASA Community" version="1.0" name="MTASA Community Gamemode" />
+    <info type="gamemode" author="MTASA Community" version="1.0" name="MTASA Community Gamemode" />
 	
     <!-- Shared -->
 
 	
     <!-- Server -->
-    <script src="server/Main.lua" type="server" />
+    <script src="Server/Main.lua" type="server"/>
+
+    	<!--Vehicle-->
+    	<script src="Server/Vehicle/Vehicle.lua"/>
 
     <!-- Client -->
 </meta>
