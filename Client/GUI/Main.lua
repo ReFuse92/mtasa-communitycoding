@@ -1,11 +1,15 @@
-
-
-
+--
+-- Project: MTASA CommunityCoding
+-- User:
+-- Package: Client.GUI.main
+-- Date:
+-- Time:
+--
 
 function guiCreateTabMenue(x,y,w,h,rel,parent,tabs)
-local tabmenue = guiCreateTabPanel(x,y,w,h,rel,parent)
-guiSetAlpha(tabmenue,0.8)
-guiSetFont(tabmenue,"default-normal")
+	local tabmenue = guiCreateTabPanel(x,y,w,h,rel,parent)
+	guiSetAlpha(tabmenue,0.8)
+	guiSetFont(tabmenue,"default-normal")
 	for i, v in pairs (tabs) do
 		tabs[i] = guiCreateTab(v,tabmenue)
 		guiSetFont(tabs[i],"default-normal")
@@ -16,7 +20,8 @@ guiSetFont(tabmenue,"default-normal")
 	addEventHandler("onClientGUITabSwitched",tabs[#tabs],function()
 		destroyElement(tabmenue)
 	end)
-return tabmenue, tabs
+
+	return tabmenue, tabs
 end
 
 

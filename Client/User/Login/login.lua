@@ -1,6 +1,7 @@
-﻿-- Project: MTASA CommunityCoding
+﻿--
+-- Project: MTASA CommunityCoding
 -- User: Adrian93
--- Package: Client.Login.login
+-- Package: Client.User.Login.login
 -- Date: 23.11.2014
 -- Time: 11:39
 --
