@@ -124,6 +124,64 @@ function saveVehicle(driver)
 end
 
 
+function getVehicleKeyOwners(vehicle)
+	if vehicle and UserVehicles[vehicle] then
+		return UserVehicles[vehicle]["Schlüssel"]
+	else
+		return false
+	end
+end
+
+function hasPlayerVehicleKey(player,vehicle)
+	if player and vehicle and UserVehicles[vehicle] then
+		if UserVehicles[vehicle]["Schlüssel"][player] then
+			return true
+		end
+		return false
+	else
+		return false
+	end
+end
+
+function removePlayerFromVehicleKeyList(player,vehicle)
+	if player and vehicle and UserVehicles[vehicle] then
+		for i,v in pairs (UserVehicles[vehicle]["Schlüssel"]) do
+			if i == getPlayerName(player) then
+			table.remove(UserVehicles[vehicle]["Schlüssel"],i)
+				return true
+			end
+		end
+		return false
+	else
+		return false
+	end
+end
+
+function addPlayerToVehicleKeyList(player,vehicle)
+	if player and vehicle and UserVehicles[vehicle] then
+		if not UserVehicles[vehicle]["Schlüssel"][player] then
+			UserVehicles[vehicle]["Schlüssel"][player] = true
+			return true
+		end
+		return false
+	else
+		return false
+	end
+end
+
+function updateDataFromAllClients()
+
+end
+
+function sendDataToClient()
+
+
+
+end
+
+
+
+
 --TODO
 --[[
 function deleteVehicle(veh)
