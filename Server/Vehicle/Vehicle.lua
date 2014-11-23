@@ -1,6 +1,3 @@
---Variablen
-handler = dbConnect( 'mysql', 'dbname=testing;host=127.0.0.1','root', '')
-
 -- Usefull
 for i=0, 49 do
 setGarageOpen(i,true)
@@ -11,7 +8,7 @@ UserVehicles = {}
 Chat = outputChatBox
 
 function loadCars()
-	local query = dbQuery(handler, "SELECT * FROM Fahrzeuge")
+	local query = dbQuery(mySQL.handler, "SELECT * FROM Fahrzeuge")
 	local result, row, error = dbPoll(query, -1)
 	if row > 0 then
 		for result, row in pairs(result) do
@@ -95,7 +92,7 @@ function addVehicle(vehid,x,y,z,Besitzer)
 	local temp_veh = createVehicle(vehid,x,y,z,0,0,0,Besitzer)
 	local spawn = toJSON({x,y,z,0,0,0})
 	local farbe = toJSON({255,255,255,0,0,0,255,255,255,0})--Farbe 1,2 Lichtfarbe, Paintjob
-	local query = dbQuery(handler,"INSERT INTO Fahrzeuge (Name, Besitzer, Schluessel, Spawn, Schaden, Farbe, Tunings, Spezial, Tank, Kennzeichen) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", getVehicleName(temp_veh), Besitzer, toJSON({}), spawn, 1000, farbe, toJSON(getVehicleUpgrades(temp_veh)), toJSON({}), 1000, Besitzer )
+	local query = dbQuery(mySQL.handler,"INSERT INTO Fahrzeuge (Name, Besitzer, Schluessel, Spawn, Schaden, Farbe, Tunings, Spezial, Tank, Kennzeichen) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", getVehicleName(temp_veh), Besitzer, toJSON({}), spawn, 1000, farbe, toJSON(getVehicleUpgrades(temp_veh)), toJSON({}), 1000, Besitzer )
 	local result, rows, ID = dbPoll(query,-1)
 	setVehicleColor(temp_veh,255,255,255,255,255,255)
 	UserVehicles[temp_veh] = {}
@@ -117,7 +114,7 @@ function saveVehicle(driver)
 			local rx,ry,rz = getElementRotation(source)
 			local spawn = toJSON({x,y,z,rx,ry,rz})
 			local id = UserVehicles[source]["ID"]
-			dbExec(handler,"UPDATE Fahrzeuge SET Spawn=?, Schaden=? WHERE ID=?",spawn,getElementHealth(source),id)
+			dbExec(mySQL.handler,"UPDATE Fahrzeuge SET Spawn=?, Schaden=? WHERE ID=?",spawn,getElementHealth(source),id)
 			outputConsole("Dein Fahrzeug mit ID "..id.." ("..getVehicleName(source)..") wurde gespeichert.",driver)
 		end
 	end
@@ -186,7 +183,7 @@ end
 --[[
 function deleteVehicle(veh)
 	if UserVehicles[veh] then
-		dbExec(handler,"UPDATE Fahrzeuge SET Spawn=?, Schaden=? WHERE ID=?",id)
+		dbExec(mySQL.handler,"UPDATE Fahrzeuge SET Spawn=?, Schaden=? WHERE ID=?",id)
 		return true
 	else
 		return false

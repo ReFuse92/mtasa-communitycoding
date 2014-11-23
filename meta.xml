@@ -16,7 +16,7 @@
     <script src="Server/Main.lua" type="server"/>
 
     	<!--Vehicle-->
-    	<script src="Server/Vehicle/Vehicle.lua"/>
+    	<script src="Server/Vehicle/vehicle.lua"/>
 
     <!-- Client -->
 </meta>
