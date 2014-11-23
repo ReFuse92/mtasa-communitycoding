@@ -1,6 +1,6 @@
 ﻿-- Project: MTASA CommunityCoding
 -- User: Adrian93
--- Package: Server.Login.login_s
+-- Package: Server.Login.login
 -- Date: 23.11.2014
 -- Time: 11:39
 --
