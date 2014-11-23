@@ -30,20 +30,21 @@ if #mySQL > 0 then -- check if we have valid mysql informations
         assert(isElement(usr), "[setAllMySQLData] usr is not valid element!")
         assert(type(tbl) == "table", "[setAllMySQLData] data is not valid!")
 
-        local query = ("UPDATE `userdata` SET `%s` = %s"):format(tbl[1], tbl[2])
+        local query = ("UPDATE `userdata` SET `%s` = %s"):format("??", "?")
         if #tbl > 2 then
             for i = 3, #tbl, 2 do
                 if i == #tbl-1 then
-                    query = ("%s, `%s` = %s WHERE `username`= ?;"):format(query, tbl[i], tbl[i+1])
+                    query = ("%s, `%s` = %s WHERE `username`= ?;"):format(query, "??", "?")
                 else
-                    query = ("%s, `%s` = %s"):format(query, tbl[i], tbl[i+1])
+                    query = ("%s, `%s` = %s"):format(query, "??", "?")
                 end
             end
         else
             query = ("%s WHERE `username`= ?;"):format(query)
         end
 
-        return dbExec(mySQL.handler, query, getPlayerName(usr))
+        table.insert(tbl, getPlayerName(usr))
+        return dbExec(mySQL.handler, query, unpack(tbl))
     end
 
     function getMySQLData (usr, data, process)
