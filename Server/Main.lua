@@ -18,6 +18,12 @@ if #mySQL > 0 then -- check if we have valid mysql informations
         stopResource(getThisResource())
     end
 
+    --[[
+        Setzt den Wert der Spalte auf den angegeben Wert
+        @param usr player
+        @param data string
+        @param value string/number
+    --]]
     function setMySQLData (usr, data, value)
         assert(isElement(usr), "[setMySQLData] usr is not valid element!")
         assert(data, "[setMySQLData] data is not valid!")
@@ -26,6 +32,12 @@ if #mySQL > 0 then -- check if we have valid mysql informations
         return dbExec(mySQL.handler, "UPDATE `userdata` SET `??` = ? WHERE `username` = ?;", data, value, getPlayerName(usr));
     end
 
+    --[[
+        Setzt alle Daten aus einer Tabelle in die Userdatenbank
+        @param usr player
+        @param tbl table {"spalte1", "wert1", "spalte2", "wert2"}
+        @author StiviK
+    --]]
     function setAllMySQLData (usr, tbl)
         assert(isElement(usr), "[setAllMySQLData] usr is not valid element!")
         assert(type(tbl) == "table", "[setAllMySQLData] data is not valid!")
@@ -47,6 +59,12 @@ if #mySQL > 0 then -- check if we have valid mysql informations
         return dbExec(mySQL.handler, query, unpack(tbl))
     end
 
+    --[[
+        Lädt den gewünschten aus der Wert aus der Datenbank
+        @param usr player
+        @param data string
+        @para process boolean (Direkte verarbeitung mit dbPoll?)
+    --]]
     function getMySQLData (usr, data, process)
         assert(isElement(usr), "[setMySQLData] usr is not valid element!")
         assert(data, "[setMySQLData] data is not valid!")
