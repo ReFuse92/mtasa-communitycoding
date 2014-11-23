@@ -26,6 +26,8 @@ function loadCars()
 		local Kennzeichen = row["Kennzeichen"]
 		-- erstellen
 		veh = createVehicle(getVehicleModelFromName(Autoname),Spawn[1], Spawn[2], Spawn[3], Spawn[4], Spawn[5], Spawn[6], Kennzeichen)
+		setElementInterior(veh,Spawn[7])
+		setElementDimension(veh,Spawn[8])
 		--weitere Einstellungen
 		setVehicleRespawnPosition(veh,1628.82 , -1609.18 , 13.55 , 359.96 , 0 , 90.12)-- bei den Abschleppern
 		setElementHealth(veh,tonumber(Schaden))
@@ -90,8 +92,8 @@ end
 
 function addVehicle(vehid,x,y,z,Besitzer)
 	local temp_veh = createVehicle(vehid,x,y,z,0,0,0,Besitzer)
-	local spawn = toJSON({x,y,z,0,0,0})
-	local farbe = toJSON({255,255,255,0,0,0,255,255,255,0})--Farbe 1,2 Lichtfarbe, Paintjob
+	local spawn = toJSON({x,y,z,0,0,0,0,0})
+	local farbe = toJSON({255,255,255,0,0,0,255,255,255,3})--Farbe 1,2 Lichtfarbe, Paintjob
 	local query = dbQuery(mySQL.handler,"INSERT INTO Fahrzeuge (Name, Besitzer, Schluessel, Spawn, Schaden, Farbe, Tunings, Spezial, Tank, Kennzeichen) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", getVehicleName(temp_veh), Besitzer, toJSON({}), spawn, 1000, farbe, toJSON(getVehicleUpgrades(temp_veh)), toJSON({}), 1000, Besitzer )
 	local result, rows, ID = dbPoll(query,-1)
 	setVehicleColor(temp_veh,255,255,255,255,255,255)
@@ -112,7 +114,8 @@ function saveVehicle(driver)
 		if UserVehicles[source]["Besitzer"] == getPlayerName(driver) then
 			local x,y,z = getElementPosition(source)
 			local rx,ry,rz = getElementRotation(source)
-			local spawn = toJSON({x,y,z,rx,ry,rz})
+			local int, dim = getElementInterior(source), getElementDimension(source)
+			local spawn = toJSON({x,y,z,rx,ry,rz,int,dim})
 			local id = UserVehicles[source]["ID"]
 			dbExec(mySQL.handler,"UPDATE Fahrzeuge SET Spawn=?, Schaden=? WHERE ID=?",spawn,getElementHealth(source),id)
 			outputConsole("Dein Fahrzeug mit ID "..id.." ("..getVehicleName(source)..") wurde gespeichert.",driver)
