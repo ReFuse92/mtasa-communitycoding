@@ -8,6 +8,9 @@
 lp = getLocalPlayer()
 
 
+--
+--Datensynchro (falls unverständlich, bitte fragen)
+--
 
 addEventHandler("onClientResourceStart",getResourceRootElement(getThisResource()),function()
 triggerServerEvent("onClientWishToHaveVehicleData",lp)
@@ -28,6 +31,15 @@ addEventHandler("onClientRecieveVehicleData",root,function(veh,key,value)
 		if not UserVehicles[veh] then UserVehicles[veh] = {} end
 		UserVehicles[veh][key] = value
 end)
+
+
+--
+--Funktionen
+--
+
+
+--addEventHandler()
+
 
 
 

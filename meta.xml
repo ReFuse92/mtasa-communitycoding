@@ -8,6 +8,7 @@
         <script src="Server/Settings.lua" type="server"/>
 
         <!-- Client -->
+		<script src="Client/User/settings.lua" type="client"/>
 
     <!-- Shared -->
 
