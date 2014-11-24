@@ -1,3 +1,12 @@
+--
+-- Project: MTASA CommunityCoding
+-- User: MasterM
+-- Package: Server.Vehicle.vehicle
+-- Date:
+-- Time:
+--
+
+
 -- Usefull
 for i=0, 49 do
 setGarageOpen(i,true)
@@ -5,6 +14,9 @@ end
 
 
 UserVehicles = {}
+
+
+
 Chat = outputChatBox
 
 function loadCars()
@@ -32,7 +44,6 @@ function loadCars()
 		setVehicleRespawnPosition(veh,1628.82 , -1609.18 , 13.55 , 359.96 , 0 , 90.12)-- bei den Abschleppern
 		setElementHealth(veh,tonumber(Schaden))
 		createBlipAttachedTo(veh,55)
-		toggleVehicleRespawn(veh,true)
 		toggleVehicleRespawn(veh,true)-- ggf. Daten von nebenbei laufenden Scripts überschreiben
 		setVehicleRespawnDelay(veh,15000)-- 15 sekunden
 		setVehicleIdleRespawnDelay(veh,1000*60*60*24)-- 24 Stunden (wird nicht respawnt)
@@ -79,6 +90,7 @@ function loadCars()
 			UserVehicles[veh]["Schlüssel"] = sOwner
 			UserVehicles[veh]["Spezial"] = Spezial
 			UserVehicles[veh]["Tank"] = Tank
+			-- Daten müssen nicht gesynct werden, da am Serverstart noch keine Spieler da sind
 			
 			addEventHandler("onVehicleExit",veh,saveVehicle)
 		-- ende des Auslesens
@@ -103,6 +115,13 @@ function addVehicle(vehid,x,y,z,Besitzer)
 	UserVehicles[temp_veh]["Schlüssel"] = {}
 	UserVehicles[temp_veh]["Spezial"] = {}
 	UserVehicles[temp_veh]["Tank"] = 1000
+	
+	updateDataForAllClients(temp_veh,"ID")
+	updateDataForAllClients(temp_veh,"Besitzer")
+	updateDataForAllClients(temp_veh,"Schlüssel")
+	updateDataForAllClients(temp_veh,"Spezial")
+	updateDataForAllClients(temp_veh,"Tank")
+	
 	addEventHandler("onVehicleExit",temp_veh,saveVehicle)
 	return temp_veh
 end
@@ -148,6 +167,7 @@ function removePlayerFromVehicleKeyList(player,vehicle)
 		for i,v in pairs (UserVehicles[vehicle]["Schlüssel"]) do
 			if i == getPlayerName(player) then
 			table.remove(UserVehicles[vehicle]["Schlüssel"],i)
+			updateDataForAllClients(vehicle,"Schlüssel")
 				return true
 			end
 		end
@@ -161,6 +181,7 @@ function addPlayerToVehicleKeyList(player,vehicle)
 	if player and vehicle and UserVehicles[vehicle] then
 		if not UserVehicles[vehicle]["Schlüssel"][player] then
 			UserVehicles[vehicle]["Schlüssel"][player] = true
+			updateDataForAllClients(vehicle,"Schlüssel")
 			return true
 		end
 		return false
@@ -169,15 +190,21 @@ function addPlayerToVehicleKeyList(player,vehicle)
 	end
 end
 
-function updateDataFromAllClients()
 
+
+
+--syncing
+function updateDataForAllClients(veh,key)
+	triggerClientEvent(getRootElement(),"onClientRecieveVehicleData",getRootElement(),veh,key,UserVehicles[veh][key])
 end
 
-function sendDataToClient()
 
 
+addEvent("onClientWishToHaveVehicleData",true)
+addEventHandler("onClientWishToHaveVehicleData",getRootElement(),function()
+	triggerClientEvent(client,"onClientPrepareVehicleData",getRootElement(),UserVehicles)
+end)
 
-end
 
 
 
@@ -202,9 +229,11 @@ loadCars()
 function createEpicVehicle(player,cmd,id)
 	if id then	
 		local x,y,z = getElementPosition(player)
-		if not getVehicleIDFromName(id) then return Chat(id.." ist kein gültiges Fahrzeug.", player) end
-				local newveh = addVehicle(getVehicleIDFromName(id),x,y+2,z,getPlayerName(player))	
+		if not getVehicleModelFromName(id) then return Chat(id.." ist kein gültiges Fahrzeug.", player) end
+				local newveh = addVehicle(getVehicleModelFromName(id),x,y+2,z,getPlayerName(player))	
 				warpPedIntoVehicle(player,newveh)
+				setElementInterior(newveh,getElementInterior(player))
+				setElementDimension(newveh,getElementDimension(player))
 	else
 		Chat("Du musst ein Fahrzeug angeben", player)
 	end
