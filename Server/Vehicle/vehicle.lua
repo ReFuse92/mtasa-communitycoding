@@ -195,18 +195,36 @@ end
 
 --syncing
 function updateDataForAllClients(veh,key)
-	triggerClientEvent(getRootElement(),"onClientRecieveVehicleData",getRootElement(),veh,key,UserVehicles[veh][key])
+	triggerClientEvent("onClientRecieveVehicleData", resourceRoot, veh, key, UserVehicles[veh][key])
 end
 
 
-
-addEvent("onClientWishToHaveVehicleData",true)
-addEventHandler("onClientWishToHaveVehicleData",getRootElement(),function()
-	triggerClientEvent(client,"onClientPrepareVehicleData",getRootElement(),UserVehicles)
-end)
-
-
-
+local vehRequestTimer = false
+function sendClientVehicleDatas()
+	--triggerClientEvent(client,"onClientPrepareVehicleData",getRootElement(),UserVehicles)
+	--Use a letent event! (Preventing DoS Attemps!)
+	local events = #getLatentEventHandles(client)
+	if #events > 3 then
+		--Server handles many events at the same time for one client. We should requeue our event to pretend heavy load!
+		if (vehRequestTimer and isTimer(vehRequestTimer)) then
+			--Would be handles twice. Stop here!
+			return false
+		else
+			--Retry in 5 seconds..
+			vehRequestTimer = setTimer(
+				function()
+					_G["client"] = client
+					sendClientVehicleDatas()
+				end
+			, 5000, 1)
+		end
+	else
+		--Execute the trigger..
+		triggerLatentClientEvent(client, "onClientPrepareVehicleData", 500000, false, client, UserVehicles)
+	end
+end
+addEvent("onClientWishToHaveVehicleData", true)
+addEventHandler("onClientWishToHaveVehicleData", getRootElement(), sendClientVehicleDatas)
 
 
 --TODO
