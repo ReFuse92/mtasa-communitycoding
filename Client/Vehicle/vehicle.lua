@@ -7,31 +7,33 @@
 --
 lp = getLocalPlayer()
 
-
 --
 --Datensynchro (falls unverständlich, bitte fragen)
 --
 
-addEventHandler("onClientResourceStart",getResourceRootElement(getThisResource()),function()
-triggerServerEvent("onClientWishToHaveVehicleData",lp)
-end)
-
+--resourceRoot == getResourceRootElement(getThisResource())
+--resourceRoot == getResourceRootElement()
+addEventHandler("onClientResourceStart", resourceRoot,
+	function()
+		triggerServerEvent("onClientWishToHaveVehicleData",lp)
+	end
+)
 
 UserVehicles = nil
+addEvent("onClientPrepareVehicleData", true)
+addEventHandler("onClientPrepareVehicleData", root, 
+	function(tab)
+		UserVehicles = tab
+	end
+)
 
-addEvent("onClientPrepareVehicleData",true)
-addEventHandler("onClientPrepareVehicleData",root,function(tab)
-UserVehicles = tab
-end)
-
-
-
-addEvent("onClientRecieveVehicleData",true)
-addEventHandler("onClientRecieveVehicleData",root,function(veh,key,value)
+addEvent("onClientRecieveVehicleData", true)
+addEventHandler("onClientRecieveVehicleData", root, 
+	function(veh,key,value)
 		if not UserVehicles[veh] then UserVehicles[veh] = {} end
 		UserVehicles[veh][key] = value
-end)
-
+	end
+)
 
 --
 --Funktionen
@@ -39,11 +41,3 @@ end)
 
 
 --addEventHandler()
-
-
-
-
-
-
-
-
