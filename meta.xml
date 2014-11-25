@@ -3,6 +3,7 @@
 
     <!-- Settings -->
         <!-- Shared -->
+        <script src="Shared/Settings.lu" type="shared"/>
 
         <!-- Server -->
         <script src="Server/Settings.lua" type="server"/>
