@@ -18,10 +18,14 @@ xmlWerte = {
 ["Car_Licht"] = "L",
 }
 
+local settingsFile = "@Einstellungen.xml")
+--var for the file to make it a little bit more dynamic
+--@, to make the file private, so other servers can't read it
+
 function loadSettings()
-	local xml = xmlLoadFile("Einstellungen.xml")
+	local xml = xmlLoadFile(settingsFile)
 	if not xml then -- neue XML erstellen, falls benötigt
-		xml = xmlCreateFile("Einstellungen.xml","Einstellungen")
+		xml = xmlCreateFile(settingsFile,"Einstellungen")
 	end
 	
 	for i,v in pairs(xmlWerte) do -- Schleife von allen Werten der Tabelle
@@ -38,7 +42,7 @@ end
 
 
 function resetSettings()
-	local xml = xmlLoadFile("Einstellungen.xml")
+	local xml = xmlLoadFile(settingsFile)
 	if not xml then return loadSettings() end
 		for i, v in pairs(xmlWerte) do
 			xmlDestroyNode(xmlFindChild(xml,i,0))
@@ -53,7 +57,7 @@ addCommandHandler("destroy",resetSettings)
 
 
 function getSetting(name)
-	local xml = xmlLoadFile("Einstellungen.xml")
+	local xml = xmlLoadFile(settingsFile)
 	if not xml then return loadSettings() end
 	local child = xmlFindChild(xml,name,0)
 	local value = false
@@ -66,7 +70,7 @@ function getSetting(name)
 end
 
 function setSetting(name,wert)
-	local xml = xmlLoadFile("Einstellungen.xml")
+	local xml = xmlLoadFile(settingsFile)
 	if not xml then return loadSettings() end
 		if not xmlFindChild(xml,name,0) then 
 			xmlNodeSetValue(xmlCreateChild(xml,name),wert)
