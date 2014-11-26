@@ -7,8 +7,8 @@
 --
 
 mySQL         = {}
-mySQL.host    = ""
-mySQL.user    = "";
+mySQL.host    = "127.0.0.1"
+mySQL.user    = "root";
 mySQL.pass    = "";
-mySQL.db      = "";
+mySQL.db      = "testing";
 mySQL.handler = nil;

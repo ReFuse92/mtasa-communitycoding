@@ -2,3 +2,4 @@
 *.iml
 .idea/*
 .idea
+Server/Settings.lua
