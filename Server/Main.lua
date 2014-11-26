@@ -9,7 +9,7 @@
 --if #mySQL > 0 then -- check if we have valid mysql informations
     outputDebugString("[MYSQL] Connecting to the mySQL-Server...")
 
-    mySQL.handler = dbConnect("mysql", ("dbname=%s;host=%s"):(mySQL.db,mySQL.host), mySQL.user, mySQL.pass)
+    mySQL.handler = dbConnect("mysql", ("dbname=%s;host=%s"):format(mySQL.db,mySQL.host), mySQL.user, mySQL.pass)
     
 
     if mySQL.handler then
