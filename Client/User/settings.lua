@@ -18,7 +18,7 @@ xmlWerte = {
 ["Car_Licht"] = "L",
 }
 
-local settingsFile = ("@Einstellungen.xml")
+local settingsFile = "@Einstellungen.xml"
 --var for the file to make it a little bit more dynamic
 --@, to make the file private, so other servers can't read it
 
