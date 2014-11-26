@@ -204,7 +204,7 @@ function sendClientVehicleDatas()
 	--triggerClientEvent(client,"onClientPrepareVehicleData",getRootElement(),UserVehicles)
 	--Use a letent event! (Preventing DoS Attemps!)
 	local events = #getLatentEventHandles(client)
-	if #events > 3 then
+	if events > 3 then
 		--Server handles many events at the same time for one client. We should requeue our event to pretend heavy load!
 		if (vehRequestTimer and isTimer(vehRequestTimer)) then
 			--Would be handles twice. Stop here!
@@ -212,11 +212,11 @@ function sendClientVehicleDatas()
 		else
 			--Retry in 5 seconds..
 			vehRequestTimer = setTimer(
-				function()
-					_G["client"] = client
+				function(c)
+					_G["client"] = c
 					sendClientVehicleDatas()
 				end
-			, 5000, 1)
+			, 5000, 1, client)
 		end
 	else
 		--Execute the trigger..
